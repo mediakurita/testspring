@@ -16,13 +16,14 @@ import java.util.UUID;
 @Controller
 public class HomeController {
     private final TaskListDao dao;
+
     record TaskItem(String id, String task, String deadline, boolean done) {
     }
 
     private List<TaskItem> taskItems = new ArrayList<>();
 
     @Autowired
-    HomeController(TaskListDao dao){
+    HomeController(TaskListDao dao) {
         this.dao = dao;
     }
 
@@ -48,4 +49,23 @@ public class HomeController {
 
         return "redirect:/list";
     }
+
+    @GetMapping("/delete")
+    String deleteItem(@RequestParam("id") String id) {
+        dao.delete(id);
+        return "redirect:/list";
+    }
+
+    @GetMapping("/update")
+    String updateItem(@RequestParam("id") String id,
+                      @RequestParam("task") String task,
+                      @RequestParam("deadline") String deadline,
+                      @RequestParam("dano") boolean done
+                      ) {
+        TaskItem taskItem = new TaskItem(id, task, deadline, done);
+        dao.update(taskItem);
+
+        return "redirect:/list";
+    }
+
 }
