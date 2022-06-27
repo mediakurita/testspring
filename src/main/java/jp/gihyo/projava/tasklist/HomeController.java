@@ -60,7 +60,7 @@ public class HomeController {
     String updateItem(@RequestParam("id") String id,
                       @RequestParam("task") String task,
                       @RequestParam("deadline") String deadline,
-                      @RequestParam("dano") boolean done
+                      @RequestParam("done") boolean done
                       ) {
         TaskItem taskItem = new TaskItem(id, task, deadline, done);
         dao.update(taskItem);
