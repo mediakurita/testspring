@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,4 +71,26 @@ public class HomeController {
         return "redirect:/list";
     }
 
+    @GetMapping("/export")
+    String exportList(Model model){
+        try {
+            this.taskItems = (List<TaskItem>) model.getAttribute("taskList");
+            Path currpath = Paths.get("").toAbsolutePath();
+            System.out.println(currpath);
+            var p = Path.of(currpath + "/tasklist.txt");
+            System.out.println(p);
+            for (TaskItem item : taskItems){
+                String str = item.id() + ","
+                            +item.task() + ","
+                            +item.deadline() + ","
+                            +item.done()+ "\n";
+                System.out.println(str);
+                Files.writeString(p, str);
+            }
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return "redirect:/list";
+    }
 }

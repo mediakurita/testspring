@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>タスク管理アプリケーション</title>
     <link th:href="@{/home.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/function.js}"></script>
 </head>
 <body>
 <h1>タスク管理アプリケーション</h1>
@@ -18,9 +19,22 @@
         <input type="submit" value="登録">
     </form>
 </div>
-
 <div class="tasklist">
     <h2>現在のタスク一覧</h2>
+    <div>
+            <button type="button" id="export_button"
+                    th:onclick="exportList([[${taskList}]]);">
+                エクスポート
+            </button>
+    </div>
+ <!--   <div>
+        <button type="button" id="import_button"
+                th:onclick="importList([[${taskList}]]);">
+            インポート
+        </button>
+    </div>
+-->
+
     <table border="1" style="border-collapse:collapse;">
         <tbody>
         <tr th:each="task : ${taskList}">
@@ -30,7 +44,8 @@
             <td width="50px" th:text="${task.done}?'完了':'未完了'"></td>
             <td width="50px">
                 <button type="submit" id="update_button"
-                        onclick="
+                        onclick="let row = this.parentElement.parentElement;update(row);">
+<!--                        onclick="
                                  let row = this.parentElement.parentElement;
                                  getElementById('update_id').value = row.cells[0].firstChild.data;
                                  getElementById('update_task').value = row.cells[1].firstChild.data;
@@ -40,7 +55,7 @@
                                  var dialog = getElementById('updateDialog');
                                  dialog.style.left = ((window.innerWidth-500)/2)+'px';
                                  dialog.style.display = 'block';
-                                ">
+                                ">-->
                     更新
                 </button>
             </td>
@@ -80,13 +95,14 @@
             </select>
             <div>
                 <button type="submit">更新</button>
+<!--                <button type="reset"-->
+<!--                        onclick="getElementById('updateDialog').style.display='none';">-->
                 <button type="reset"
-                        onclick="getElementById('updateDialog').style.display='none';">
+                        onclick="cancell();">
                     キャンセル
                 </button>
             </div>
-
-        </form>
+         </form>
     </div>
 </div>
 </body>
